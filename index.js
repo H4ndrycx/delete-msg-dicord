@@ -4,7 +4,7 @@ require('dotenv/config');
 
 const getList = async () => {
     const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
     });
     const page = await browser.newPage();
     await page.goto('https://discord.com/channels/@me');
@@ -32,14 +32,14 @@ const getList = async () => {
 
     let currentDmClick = 0
     let err = false
+
     try {
         while (true) {
-            x++
-            await delay(1500)
+            currentDmClick++
+            await delay(2000)
             page.click(`[aria-posinset="${currentDmClick}"]`)
-                .then(
-                    page.click(`[aria-posinset="${currentDmClick}"]`)
-                )
+                .catch(error => err = true)
+            page.click(`[aria-posinset="${currentDmClick}"]`)
                 .catch(error => err = true)
 
             if(err) throw new Error("Not found element to click")
